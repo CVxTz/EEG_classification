@@ -1,4 +1,4 @@
-from models import get_model_seq
+from models import get_model_cnn_crf
 import numpy as np
 from utils import gen, chunker, WINDOW_SIZE, rescale_array
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
@@ -12,7 +12,7 @@ from tqdm import tqdm
 base_path = "/media/ml/data_ml/EEG/deepsleepnet/data_npy"
 
 files = sorted(glob(os.path.join(base_path, "*.npz")))
-train_val, test = train_test_split(files, test_size=0.15, random_state=1337)
+train_val, test = files[:-6], files[-6:]
 
 train, val = train_test_split(train_val, test_size=0.1, random_state=1337)
 
@@ -20,7 +20,7 @@ train_dict = {k: np.load(k) for k in train}
 test_dict = {k: np.load(k) for k in test}
 val_dict = {k: np.load(k) for k in val}
 
-model = get_model_seq()
+model = get_model_cnn_crf()
 
 file_path = "cnn_crf_model.h5"
 # model.load_weights(file_path)

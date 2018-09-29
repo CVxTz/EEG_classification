@@ -1,6 +1,8 @@
 from keras import optimizers, losses, activations, models
 from keras.layers import Dense, Input, Dropout, Convolution1D, MaxPool1D, GlobalMaxPool1D, GlobalAveragePooling1D, \
-    concatenate, SpatialDropout1D, TimeDistributed
+    concatenate, SpatialDropout1D, TimeDistributed, Bidirectional, LSTM
+from keras_contrib.layers import CRF
+
 from utils import WINDOW_SIZE
 
 def get_model():
@@ -63,13 +65,13 @@ def get_base_model():
     return base_model
 
 
-def get_model_seq():
+def get_model_cnn():
     nclass = 5
 
     seq_input = Input(shape=(None, WINDOW_SIZE*30, 1))
     base_model = get_base_model()
-    for layer in base_model.layers:
-        layer.tainable = False
+    # for layer in base_model.layers:
+    #     layer.trainable = False
     encoded_sequence = TimeDistributed(base_model)(seq_input)
     encoded_sequence = SpatialDropout1D(rate=0.01)(Convolution1D(128,
                                                                kernel_size=3,
@@ -86,6 +88,59 @@ def get_model_seq():
     model = models.Model(seq_input, out)
 
     model.compile(optimizers.Adam(0.001), losses.sparse_categorical_crossentropy, metrics=['acc'])
+    model.summary()
+
+    return model
+
+def get_model_lstm():
+    nclass = 5
+
+    seq_input = Input(shape=(None, WINDOW_SIZE*30, 1))
+    base_model = get_base_model()
+    for layer in base_model.layers:
+        layer.trainable = False
+    encoded_sequence = TimeDistributed(base_model)(seq_input)
+    encoded_sequence = Bidirectional(LSTM(100, return_sequences=True))(encoded_sequence)
+    encoded_sequence = Dropout(rate=0.5)(encoded_sequence)
+    encoded_sequence = Bidirectional(LSTM(100, return_sequences=True))(encoded_sequence)
+    #out = TimeDistributed(Dense(nclass, activation="softmax"))(encoded_sequence)
+    out = Convolution1D(nclass, kernel_size=1, activation="softmax", padding="same")(encoded_sequence)
+
+    model = models.Model(seq_input, out)
+
+    model.compile(optimizers.Adam(0.001), losses.sparse_categorical_crossentropy, metrics=['acc'])
+    model.summary()
+
+    return model
+
+def get_model_cnn_crf():
+    nclass = 5
+
+    seq_input = Input(shape=(None, WINDOW_SIZE*30, 1))
+    base_model = get_base_model()
+    # for layer in base_model.layers:
+    #     layer.trainable = False
+    encoded_sequence = TimeDistributed(base_model)(seq_input)
+    encoded_sequence = SpatialDropout1D(rate=0.01)(Convolution1D(128,
+                                                               kernel_size=3,
+                                                               activation="relu",
+                                                               padding="same")(encoded_sequence))
+    encoded_sequence = Dropout(rate=0.05)(Convolution1D(128,
+                                                               kernel_size=3,
+                                                               activation="linear",
+                                                               padding="same")(encoded_sequence))
+
+    #out = TimeDistributed(Dense(nclass, activation="softmax"))(encoded_sequence)
+    # out = Convolution1D(nclass, kernel_size=3, activation="linear", padding="same")(encoded_sequence)
+
+    crf = CRF(nclass, sparse_target=True)
+
+    out = crf(encoded_sequence)
+
+
+    model = models.Model(seq_input, out)
+
+    model.compile(optimizers.Adam(0.001), crf.loss_function, metrics=[crf.accuracy])
     model.summary()
 
     return model
