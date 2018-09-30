@@ -6,24 +6,23 @@ import datetime as dt
 import collections
 import librosa
 
-filename = "../input/challenge_data.h5"
+path = "/media/ml/data_ml/EEG/deepsleepnet/data_npy/SC4061E0.npz"
 
-f = h5py.File(filename, "r")
+data = np.load(path)
 
+x = data['x']
+y = data['y']
 
+fig_1 = plt.figure(figsize=(12, 6))
+plt.plot(x[100, ...].ravel())
+plt.title("EEG Epoch")
+plt.ylabel("Amplitude")
+plt.xlabel("Time")
+plt.show()
 
-
-def preprocess_audio_mel_T(audio, sample_rate=250, n_mels=59):
-
-    mel_spec = librosa.feature.melspectrogram(y=audio, sr=sample_rate, n_mels= n_mels, hop_length=128)
-    mel_db = (librosa.power_to_db(mel_spec, ref=np.max) + 40)/40
-
-    return mel_db.T
-
-x = f['2']['channel1'][2000:(2000+250*30)]
-
-out = preprocess_audio_mel_T(x)
-print(out.shape)
-plt.imshow(out)
-plt.colorbar()
+fig_2 = plt.figure(figsize=(12, 6))
+plt.plot(y.ravel())
+plt.title("Sleep Stages")
+plt.ylabel("Classes")
+plt.xlabel("Time")
 plt.show()

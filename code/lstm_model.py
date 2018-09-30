@@ -12,7 +12,13 @@ from tqdm import tqdm
 base_path = "/media/ml/data_ml/EEG/deepsleepnet/data_npy"
 
 files = sorted(glob(os.path.join(base_path, "*.npz")))
-train_val, test = files[:-6], files[-6:]
+
+ids = sorted(list(set([x.split("/")[-1][:5] for x in files])))
+#split by test subject
+train_ids, test_ids = train_test_split(ids, test_size=0.15, random_state=1338)
+
+train_val, test = [x for x in files if x.split("/")[-1][:5] in train_ids],\
+                  [x for x in files if x.split("/")[-1][:5] in test_ids]
 
 train, val = train_test_split(train_val, test_size=0.1, random_state=1337)
 
@@ -26,8 +32,8 @@ file_path = "lstm_model.h5"
 # model.load_weights(file_path)
 
 checkpoint = ModelCheckpoint(file_path, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
-early = EarlyStopping(monitor="val_acc", mode="max", patience=4, verbose=1)
-redonplat = ReduceLROnPlateau(monitor="val_acc", mode="max", patience=2, verbose=2)
+early = EarlyStopping(monitor="val_acc", mode="max", patience=20, verbose=1)
+redonplat = ReduceLROnPlateau(monitor="val_acc", mode="max", patience=5, verbose=2)
 callbacks_list = [checkpoint, early, redonplat]  # early
 
 model.fit_generator(gen(train_dict, aug=False), validation_data=gen(val_dict), epochs=100, verbose=2,

@@ -12,7 +12,13 @@ from tqdm import tqdm
 base_path = "/media/ml/data_ml/EEG/deepsleepnet/data_npy"
 
 files = sorted(glob(os.path.join(base_path, "*.npz")))
-train_val, test = files[:-6], files[-6:]
+
+ids = sorted(list(set([x.split("/")[-1][:5] for x in files])))
+#split by test subject
+train_ids, test_ids = train_test_split(ids, test_size=0.15, random_state=1338)
+
+train_val, test = [x for x in files if x.split("/")[-1][:5] in train_ids],\
+                  [x for x in files if x.split("/")[-1][:5] in test_ids]
 
 train, val = train_test_split(train_val, test_size=0.1, random_state=1337)
 
