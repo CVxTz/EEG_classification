@@ -1,0 +1,8 @@
+librosa==0.5.1
+numpy==1.15.2
+Keras==2.2.2
+tqdm==4.23.2
+keras_contrib==2.0.8
+h5py==2.8.0
+matplotlib==2.1.0
+scikit_learn==0.20.0
