@@ -37,8 +37,8 @@ early = EarlyStopping(monitor="val_acc", mode="max", patience=20, verbose=1)
 redonplat = ReduceLROnPlateau(monitor="val_acc", mode="max", patience=5, verbose=2)
 callbacks_list = [checkpoint, early, redonplat]  # early
 
-# model.fit_generator(gen(train_dict, aug=False), validation_data=gen(val_dict), epochs=100, verbose=2,
-#                     steps_per_epoch=1000, validation_steps=300, callbacks=callbacks_list)
+model.fit_generator(gen(train_dict, aug=False), validation_data=gen(val_dict), epochs=100, verbose=2,
+                    steps_per_epoch=1000, validation_steps=300, callbacks=callbacks_list)
 model.load_weights(file_path)
 
 
@@ -52,8 +52,8 @@ for record in tqdm(test_dict):
     for batch_hyp in chunker(range(all_rows.shape[0])):
 
 
-        X = all_rows[min(batch_hyp):max(batch_hyp), ...]
-        Y = test_dict[record]['y'][min(batch_hyp):max(batch_hyp)]
+        X = all_rows[min(batch_hyp):max(batch_hyp)+1, ...]
+        Y = test_dict[record]['y'][min(batch_hyp):max(batch_hyp)+1]
 
         X = np.expand_dims(X, 0)
 

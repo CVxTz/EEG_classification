@@ -113,7 +113,7 @@ def get_model_lstm():
 
     return model
 
-def get_model_cnn_crf():
+def get_model_cnn_crf(lr=0.001):
     nclass = 5
 
     seq_input = Input(shape=(None, WINDOW_SIZE*30, 1))
@@ -140,7 +140,7 @@ def get_model_cnn_crf():
 
     model = models.Model(seq_input, out)
 
-    model.compile(optimizers.Adam(0.001), crf.loss_function, metrics=[crf.accuracy])
+    model.compile(optimizers.Adam(lr), crf.loss_function, metrics=[crf.accuracy])
     model.summary()
 
     return model

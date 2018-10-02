@@ -49,8 +49,8 @@ for record in tqdm(test_dict):
     for batch_hyp in chunker(range(all_rows.shape[0])):
 
 
-        X = all_rows[min(batch_hyp):max(batch_hyp), ...]
-        Y = test_dict[record]['y'][min(batch_hyp):max(batch_hyp)]
+        X = all_rows[min(batch_hyp):max(batch_hyp)+1, ...]
+        Y = test_dict[record]['y'][min(batch_hyp):max(batch_hyp)+1]
 
         X = np.expand_dims(X, 0)
 
