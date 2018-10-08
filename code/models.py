@@ -7,7 +7,7 @@ from utils import WINDOW_SIZE
 
 def get_model():
     nclass = 5
-    inp = Input(shape=(WINDOW_SIZE*30, 1))
+    inp = Input(shape=(3000, 1))
     img_1 = Convolution1D(16, kernel_size=5, activation=activations.relu, padding="valid")(inp)
     img_1 = Convolution1D(16, kernel_size=5, activation=activations.relu, padding="valid")(img_1)
     img_1 = MaxPool1D(pool_size=2)(img_1)
@@ -37,7 +37,7 @@ def get_model():
     return model
 
 def get_base_model():
-    inp = Input(shape=(WINDOW_SIZE*30, 1))
+    inp = Input(shape=(3000, 1))
     img_1 = Convolution1D(16, kernel_size=5, activation=activations.relu, padding="valid")(inp)
     img_1 = Convolution1D(16, kernel_size=5, activation=activations.relu, padding="valid")(img_1)
     img_1 = MaxPool1D(pool_size=2)(img_1)
@@ -68,7 +68,7 @@ def get_base_model():
 def get_model_cnn():
     nclass = 5
 
-    seq_input = Input(shape=(None, WINDOW_SIZE*30, 1))
+    seq_input = Input(shape=(None, 3000, 1))
     base_model = get_base_model()
     # for layer in base_model.layers:
     #     layer.trainable = False
@@ -95,7 +95,7 @@ def get_model_cnn():
 def get_model_lstm():
     nclass = 5
 
-    seq_input = Input(shape=(None, WINDOW_SIZE*30, 1))
+    seq_input = Input(shape=(None, 3000, 1))
     base_model = get_base_model()
     for layer in base_model.layers:
         layer.trainable = False
@@ -116,7 +116,7 @@ def get_model_lstm():
 def get_model_cnn_crf(lr=0.001):
     nclass = 5
 
-    seq_input = Input(shape=(None, WINDOW_SIZE*30, 1))
+    seq_input = Input(shape=(None, 3000, 1))
     base_model = get_base_model()
     # for layer in base_model.layers:
     #     layer.trainable = False
