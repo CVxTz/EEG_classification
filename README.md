@@ -111,17 +111,3 @@ I look forward to your suggestions and feedback.
 [[1] DeepSleepNet: a Model for Automatic Sleep Stage Scoring based on Raw
 Single-Channel EEG](https://arxiv.org/pdf/1703.04046.pdf)
 
-* [Machine
-Learning](https://towardsdatascience.com/tagged/machine-learning?source=post)
-* [Eeg](https://towardsdatascience.com/tagged/eeg?source=post)
-* [Classification](https://towardsdatascience.com/tagged/classification?source=post)
-* [Deep Learning](https://towardsdatascience.com/tagged/deep-learning?source=post)
-
-### [Mansar Youness](https://towardsdatascience.com/@CVxTz)
-
-Data scientist
-[https://www.linkedin.com/in/mansar/](https://www.linkedin.com/in/mansar/)
-
-### [Towards Data Science](https://towardsdatascience.com/?source=footer_card)
-
-Sharing concepts, ideas, and codes.
