@@ -116,3 +116,16 @@ I look forward to your suggestions and feedback.
 [[1] DeepSleepNet: a Model for Automatic Sleep Stage Scoring based on Raw
 Single-Channel EEG](https://arxiv.org/pdf/1703.04046.pdf)
 
+How to cite:
+```
+@software{mansar_youness_2020_4060151,
+  author       = {Mansar Youness},
+  title        = {CVxTz/EEG\_classification: v1.0},
+  month        = sep,
+  year         = 2020,
+  publisher    = {Zenodo},
+  version      = {v1.0},
+  doi          = {10.5281/zenodo.4060151},
+  url          = {https://doi.org/10.5281/zenodo.4060151}
+}
+```
