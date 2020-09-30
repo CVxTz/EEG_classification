@@ -1,3 +1,8 @@
+
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4060151.svg)](https://doi.org/10.5281/zenodo.4060151)
+
+
 # EEG_classification
 Description of the approach : https://towardsdatascience.com/sleep-stage-classification-from-single-channel-eeg-using-convolutional-neural-networks-5c710d92d38e
 
