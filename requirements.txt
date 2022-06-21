@@ -1,5 +1,5 @@
 librosa==0.5.1
-numpy==1.15.2
+numpy==1.22.0
 Keras==2.2.2
 tqdm==4.23.2
 keras_contrib==2.0.8
